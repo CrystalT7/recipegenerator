@@ -8,16 +8,22 @@
 import SwiftUI
 
 struct ContentView: View {
+    
     var body: some View {
+        
+
+            
         VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+            Text("The Recipe Generator")
+                .font(.custom("MaskingRenta-MAxjJ", size: 17))
         }
         .padding()
     }
 }
+
+import UIKit
+
+
 
 #Preview {
     ContentView()
