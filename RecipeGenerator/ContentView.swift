@@ -15,7 +15,7 @@ struct ContentView: View {
             
         VStack {
             Text("The Recipe Generator")
-                .font(.custom("MaskingRenta-MAxjJ", size: 17))
+                .font(.custom("Marseille Free", size: 50))
         }
         .padding()
     }
