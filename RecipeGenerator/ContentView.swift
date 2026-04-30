@@ -10,14 +10,12 @@ import SwiftUI
 struct ContentView: View {
     
     var body: some View {
+        Text("The Recipe Generator")
+            .font(.custom("Marseille Free", size: 50))
+            .multilineTextAlignment(.center)
         
 
-            
-        VStack {
-            Text("The Recipe Generator")
-                .font(.custom("Marseille Free", size: 50))
-        }
-        .padding()
+        
     }
 }
 
