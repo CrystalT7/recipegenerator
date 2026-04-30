@@ -14,6 +14,9 @@ struct ContentView: View {
     @State private var mealFour: Meal?
     
     var body: some View {
+        Text("The Recipe Generator")
+            .font(.custom("Marseille Free", size: 50))
+            .multilineTextAlignment(.center)
         
 
             
