@@ -7,93 +7,78 @@
 
 import SwiftUI
 
+// Assume Meal and MealResponse are defined elsewhere
 struct ContentView: View {
     @State private var mealOne: Meal?
     @State private var mealTwo: Meal?
     @State private var mealThree: Meal?
     @State private var mealFour: Meal?
     
-    var body: some View {
-        Text("The Recipe Generator")
-            .font(.custom("Marseille Free", size: 50))
-            .multilineTextAlignment(.center)
-        
+    // Constant for image size to ensure stability
+    let imageSize: CGFloat = 100
 
-            
-        VStack {
+    var body: some View {
+        VStack(spacing: 20) {
             Text("The Recipe Generator")
-                .font(.custom("Marseille Free", size: 50))
+                .font(.custom("Marseille Free", size: 40)) // Adjusted size to fit
+                .multilineTextAlignment(.center)
             
-            HStack{
-                
-                if let mealOne = mealOne {
-                    Text(mealOne.name).font(.custom("Marseille Free", size: 0))
-                        .hidden()
-                    AsyncImage(url: URL(string: mealOne.thumbnail)){ image in
-                        image
-                            .image?.resizable()
-                            .aspectRatio(contentMode: .fit)
-                    }
-                    
-                    .frame(width: 100, height: 100)
+            VStack(spacing: 10) {
+                HStack(spacing: 10) {
+                    mealImageView(for: mealOne)
+                    mealImageView(for: mealTwo)
                 }
-                if let mealTwo = mealTwo {
-                    Text(mealTwo.name).font(.custom("Marseille Free", size: 0))
-                        .hidden()
-                    AsyncImage(url: URL(string: mealTwo.thumbnail)){ image in
-                        image
-                            .image?.resizable()
-                            .aspectRatio(contentMode: .fit)
-                    }
-                    .frame(width: 100, height: 100)
-                    
-                    
-                    
+                
+                HStack(spacing: 10) {
+                    mealImageView(for: mealThree)
+                    mealImageView(for: mealFour)
                 }
             }
             
-            HStack{
-                
-                if let mealThree = mealThree {
-                    Text(mealThree.name).font(.custom("Marseille Free", size: 0))
-                        .hidden()
-                    AsyncImage(url: URL(string: mealThree.thumbnail)){ image in
-                        image
-                            .image?.resizable()
-                            .aspectRatio(contentMode: .fit)
-                    }
-                    .frame(width: 100, height: 100)
-                }
-                
-                if let mealFour = mealFour {
-                    Text(mealFour.name).font(.custom("Marseille Free", size: 0))
-                        .hidden()
-                    AsyncImage(url: URL(string: mealFour.thumbnail)){ image in
-                        image
-                            .image?.resizable()
-                            .aspectRatio(contentMode: .fit)
-                    }
-                    .frame(width: 100, height: 100)
-                }
-            }
-            
-            Button("Generate Random Meals"){
-                Task{
-                    do{
+            Button("Generate Random Meals") {
+                Task {
+                    do {
+                        // Fetching might still cause a slight flicker,
+                        // consider adding a loading indicator inside mealImageView
                         mealOne = try await fetchRandomMeal()
                         mealTwo = try await fetchRandomMeal()
                         mealThree = try await fetchRandomMeal()
                         mealFour = try await fetchRandomMeal()
-                        
                     } catch {
-                        print("error")
+                        print("error: \(error)")
                     }
                 }
             }
+            .buttonStyle(.borderedProminent)
         }
         .padding()
     }
+    
+    // Helper view to ensure consistent image layout
+    @ViewBuilder
+    private func mealImageView(for meal: Meal?) -> some View {
+        if let meal = meal, let url = URL(string: meal.thumbnail) {
+            AsyncImage(url: url) { image in
+                image.resizable()
+            } placeholder: {
+                ProgressView() // Shows loading indicator
+            }
+            .aspectRatio(contentMode: .fill) // Fill the frame
+            .frame(width: imageSize, height: imageSize)
+            .cornerRadius(10)
+            .clipped() // Ensures image doesn't overflow
+        } else {
+            // Placeholder rectangle to keep the layout from jumping
+            Rectangle()
+                .fill(Color.gray.opacity(0.3))
+                .frame(width: imageSize, height: imageSize)
+                .cornerRadius(10)
+        }
+    }
 }
+
+// Ensure your fetchRandomMeal function is properly handling empty states
+
 
 import UIKit
 
