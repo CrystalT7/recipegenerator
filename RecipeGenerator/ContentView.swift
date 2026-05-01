@@ -7,20 +7,20 @@
 
 import SwiftUI
 
-// Assume Meal and MealResponse are defined elsewhere
+
 struct ContentView: View {
     @State private var mealOne: Meal?
     @State private var mealTwo: Meal?
     @State private var mealThree: Meal?
     @State private var mealFour: Meal?
     
-    // Constant for image size to ensure stability
+
     let imageSize: CGFloat = 100
 
     var body: some View {
         VStack(spacing: 20) {
             Text("The Recipe Generator")
-                .font(.custom("Marseille Free", size: 40)) // Adjusted size to fit
+                .font(.custom("Marseille Free", size: 40))
                 .multilineTextAlignment(.center)
             
             VStack(spacing: 10) {
@@ -38,8 +38,7 @@ struct ContentView: View {
             Button("Generate Random Meals") {
                 Task {
                     do {
-                        // Fetching might still cause a slight flicker,
-                        // consider adding a loading indicator inside mealImageView
+                     
                         mealOne = try await fetchRandomMeal()
                         mealTwo = try await fetchRandomMeal()
                         mealThree = try await fetchRandomMeal()
@@ -54,21 +53,21 @@ struct ContentView: View {
         .padding()
     }
     
-    // Helper view to ensure consistent image layout
+ 
     @ViewBuilder
     private func mealImageView(for meal: Meal?) -> some View {
         if let meal = meal, let url = URL(string: meal.thumbnail) {
             AsyncImage(url: url) { image in
                 image.resizable()
             } placeholder: {
-                ProgressView() // Shows loading indicator
+                ProgressView()
             }
-            .aspectRatio(contentMode: .fill) // Fill the frame
+            .aspectRatio(contentMode: .fill) 
             .frame(width: imageSize, height: imageSize)
             .cornerRadius(10)
-            .clipped() // Ensures image doesn't overflow
+            .clipped()
         } else {
-            // Placeholder rectangle to keep the layout from jumping
+       
             Rectangle()
                 .fill(Color.gray.opacity(0.3))
                 .frame(width: imageSize, height: imageSize)
@@ -76,8 +75,6 @@ struct ContentView: View {
         }
     }
 }
-
-// Ensure your fetchRandomMeal function is properly handling empty states
 
 
 import UIKit
@@ -88,13 +85,13 @@ func fetchRandomMeal() async throws -> Meal? {
         throw URLError(.badURL)
     }
     
-    // Fetch data using URLSession
+ 
     let (data, _) = try await URLSession.shared.data(from: url)
     
-    // Decode the JSON response
+
     let decodedResponse = try JSONDecoder().decode(MealResponse.self, from: data)
     
-    // Return the first meal in the array
+
     return decodedResponse.meals.first
 }
 
