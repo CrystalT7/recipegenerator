@@ -75,7 +75,7 @@ struct ContentView: View {
                 }
             }
             .buttonStyle(.glass)
-            .buttonStyle(.borderedProminent)
+          
             .disabled(!buttonEnabled)
         }
         .sheet(item: $selectedMeal) { meal in
