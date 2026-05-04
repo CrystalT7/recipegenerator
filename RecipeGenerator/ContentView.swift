@@ -15,6 +15,7 @@ struct ContentView: View {
     @State private var mealFour: Meal?
     @State private var selectedMeal: Meal?
     @State private var showSheet = false
+    @State private var isScaled = false
     
 
     let imageSize: CGFloat = 100
@@ -22,7 +23,7 @@ struct ContentView: View {
     var body: some View {
         VStack(spacing: 20) {
             Text("The Recipe Generator")
-                .font(.custom("Marseille Free", size: 40))
+                .font(.custom("Marseille Free", size: 60))
                 .multilineTextAlignment(.center)
             
             VStack(spacing: 10) {
@@ -50,7 +51,7 @@ struct ContentView: View {
                     }
                 }
             }
-            .buttonStyle(.borderedProminent)
+            .buttonStyle(.glass)
         }
         .sheet(item: $selectedMeal) { meal in
             ScrollView {
@@ -94,6 +95,9 @@ struct ContentView: View {
                 .padding()
             }
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(Color(red: 166/255, green: 214/255, blue: 167/255))
+    
     }
     
  
