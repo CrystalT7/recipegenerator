@@ -13,6 +13,7 @@ struct ContentView: View {
     @State private var mealTwo: Meal?
     @State private var mealThree: Meal?
     @State private var mealFour: Meal?
+    @State private var buttonEnabled = true
     @State private var selectedMeal: Meal?
     @State private var showSheet = false
     @State private var isScaled = false
@@ -41,17 +42,41 @@ struct ContentView: View {
             Button("Generate Random Meals") {
                 Task {
                     do {
-                        
+                       
+                        buttonEnabled = false
                         mealOne = try await fetchRandomMeal()
                         mealTwo = try await fetchRandomMeal()
+                        
+                        if (mealOne?.name == mealTwo?.name){
+                            mealTwo = try await fetchRandomMeal()
+                        }
+                        
                         mealThree = try await fetchRandomMeal()
+                        if (mealThree?.name == mealTwo?.name){
+                            mealThree = try await fetchRandomMeal()
+                        }
                         mealFour = try await fetchRandomMeal()
+                        
+                        if (mealThree?.name == mealFour?.name){
+                            mealFour = try await fetchRandomMeal()
+                        }
+                        
+                        if (mealOne?.name == mealFour?.name){
+                            mealOne = try await fetchRandomMeal()
+                        }
+                        
+                        buttonEnabled = true
+                        
+                        
+                        
                     } catch {
                         print("error: \(error)")
                     }
                 }
             }
             .buttonStyle(.glass)
+            .buttonStyle(.borderedProminent)
+            .disabled(!buttonEnabled)
         }
         .sheet(item: $selectedMeal) { meal in
             ScrollView {
