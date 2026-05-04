@@ -13,6 +13,8 @@ struct ContentView: View {
     @State private var mealTwo: Meal?
     @State private var mealThree: Meal?
     @State private var mealFour: Meal?
+    @State private var selectedMeal: Meal?
+    @State private var showSheet = false
     
 
     let imageSize: CGFloat = 100
@@ -38,7 +40,7 @@ struct ContentView: View {
             Button("Generate Random Meals") {
                 Task {
                     do {
-                     
+                        
                         mealOne = try await fetchRandomMeal()
                         mealTwo = try await fetchRandomMeal()
                         mealThree = try await fetchRandomMeal()
@@ -50,7 +52,48 @@ struct ContentView: View {
             }
             .buttonStyle(.borderedProminent)
         }
-        .padding()
+        .sheet(item: $selectedMeal) { meal in
+            ScrollView {
+                VStack(alignment: .leading, spacing: 16) {
+                    
+              
+                    if let url = URL(string: meal.thumbnail) {
+                        AsyncImage(url: url) { image in
+                            image
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                        } placeholder: {
+                            ProgressView()
+                        }
+                        .frame(height: 200)
+                        .clipped()
+                        .cornerRadius(12)
+                    }
+                    
+            
+                    Text(meal.name)
+                        .font(.title)
+                        .fontWeight(.bold)
+                    
+                    Divider()
+                    
+ 
+                    Text("Instructions")
+                        .font(.headline)
+                    
+               
+                    Text(
+                        meal.instructions
+                            .replacingOccurrences(of: "\r\n", with: "\n")
+                            .replacingOccurrences(of: "\n\n", with: "\n")
+                            .trimmingCharacters(in: .whitespacesAndNewlines)
+                    )
+                    .font(.body)
+                    .lineSpacing(6)
+                }
+                .padding()
+            }
+        }
     }
     
  
@@ -66,6 +109,10 @@ struct ContentView: View {
             .frame(width: imageSize, height: imageSize)
             .cornerRadius(10)
             .clipped()
+            .onTapGesture {
+                selectedMeal = meal
+                showSheet = true
+            }
         } else {
        
             Rectangle()
