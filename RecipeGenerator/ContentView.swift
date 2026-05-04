@@ -13,6 +13,7 @@ struct ContentView: View {
     @State private var mealTwo: Meal?
     @State private var mealThree: Meal?
     @State private var mealFour: Meal?
+    @State private var buttonEnabled = true
     
     // Constant for image size to ensure stability
     let imageSize: CGFloat = 100
@@ -40,16 +41,39 @@ struct ContentView: View {
                     do {
                         // Fetching might still cause a slight flicker,
                         // consider adding a loading indicator inside mealImageView
+                        buttonEnabled = false
                         mealOne = try await fetchRandomMeal()
                         mealTwo = try await fetchRandomMeal()
+                        
+                        if (mealOne?.name == mealTwo?.name){
+                            mealTwo = try await fetchRandomMeal()
+                        }
+                        
                         mealThree = try await fetchRandomMeal()
+                        if (mealThree?.name == mealTwo?.name){
+                            mealThree = try await fetchRandomMeal()
+                        }
                         mealFour = try await fetchRandomMeal()
+                        
+                        if (mealThree?.name == mealFour?.name){
+                            mealFour = try await fetchRandomMeal()
+                        }
+                        
+                        if (mealOne?.name == mealFour?.name){
+                            mealOne = try await fetchRandomMeal()
+                        }
+                        
+                        buttonEnabled = true
+                        
+                        
+                        
                     } catch {
                         print("error: \(error)")
                     }
                 }
             }
             .buttonStyle(.borderedProminent)
+            .disabled(!buttonEnabled)
         }
         .padding()
     }
