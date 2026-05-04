@@ -41,8 +41,7 @@ struct ContentView: View {
             Button("Generate Random Meals") {
                 Task {
                     do {
-                        // Fetching might still cause a slight flicker,
-                        // consider adding a loading indicator inside mealImageView
+                       
                         buttonEnabled = false
                         mealOne = try await fetchRandomMeal()
                         mealTwo = try await fetchRandomMeal()
