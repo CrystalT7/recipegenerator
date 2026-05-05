@@ -22,106 +22,119 @@ struct ContentView: View {
     let imageSize: CGFloat = 100
 
     var body: some View {
-        VStack(spacing: 20) {
-            Text("The Recipe Generator")
-                .font(.custom("Marseille Free", size: 60))
-                .multilineTextAlignment(.center)
-            
-            VStack(spacing: 10) {
-                HStack(spacing: 10) {
-                    mealImageView(for: mealOne)
-                    mealImageView(for: mealTwo)
+        ZStack{
+            Image("FoodBackground4")
+                   .resizable()
+                   .scaledToFill()
+                   .ignoresSafeArea()
+                 //  .frame(width:1000)
+            VStack(spacing: 20) {
+                Text("The Recipe Generator")
+                    .font(.custom("Marseille Free", size: 40))
+                     .multilineTextAlignment(.center)
+                     .lineLimit(nil)
+                     .minimumScaleFactor(0.5)
+                     .padding(.horizontal)
+                
+                VStack(spacing: 10) {
+                    HStack(spacing: 10) {
+                        mealImageView(for: mealOne)
+                        mealImageView(for: mealTwo)
+                    }
+                    
+                    HStack(spacing: 10) {
+                        mealImageView(for: mealThree)
+                        mealImageView(for: mealFour)
+                    }
                 }
                 
-                HStack(spacing: 10) {
-                    mealImageView(for: mealThree)
-                    mealImageView(for: mealFour)
-                }
-            }
-            
-            Button("Press For Meals!!") {
-                Task {
-                    do {
-                       
-                        buttonEnabled = false
-                        mealOne = try await fetchRandomMeal()
-                        mealTwo = try await fetchRandomMeal()
-                        
-                        if (mealOne?.name == mealTwo?.name){
-                            mealTwo = try await fetchRandomMeal()
-                        }
-                        
-                        mealThree = try await fetchRandomMeal()
-                        if (mealThree?.name == mealTwo?.name){
-                            mealThree = try await fetchRandomMeal()
-                        }
-                        mealFour = try await fetchRandomMeal()
-                        
-                        if (mealThree?.name == mealFour?.name){
-                            mealFour = try await fetchRandomMeal()
-                        }
-                        
-                        if (mealOne?.name == mealFour?.name){
+                Button("Press For Meals!!") {
+                    Task {
+                        do {
+                           
+                            buttonEnabled = false
                             mealOne = try await fetchRandomMeal()
+                            mealTwo = try await fetchRandomMeal()
+                            
+                            if (mealOne?.name == mealTwo?.name){
+                                mealTwo = try await fetchRandomMeal()
+                            }
+                            
+                            mealThree = try await fetchRandomMeal()
+                            if (mealThree?.name == mealTwo?.name){
+                                mealThree = try await fetchRandomMeal()
+                            }
+                            mealFour = try await fetchRandomMeal()
+                            
+                            if (mealThree?.name == mealFour?.name){
+                                mealFour = try await fetchRandomMeal()
+                            }
+                            
+                            if (mealOne?.name == mealFour?.name){
+                                mealOne = try await fetchRandomMeal()
+                            }
+                            
+                            buttonEnabled = true
+                            
+                            
+                            
+                        } catch {
+                            print("error: \(error)")
                         }
-                        
-                        buttonEnabled = true
-                        
-                        
-                        
-                    } catch {
-                        print("error: \(error)")
                     }
                 }
-            }
-            .buttonStyle(.glass)
-          
-            .disabled(!buttonEnabled)
-        }
-        .sheet(item: $selectedMeal) { meal in
-            ScrollView {
-                VStack(alignment: .leading, spacing: 16) {
-                    
+                .buttonStyle(.glass)
               
-                    if let url = URL(string: meal.thumbnail) {
-                        AsyncImage(url: url) { image in
-                            image
-                                .resizable()
-                                .aspectRatio(contentMode: .fill)
-                        } placeholder: {
-                            ProgressView()
-                        }
-                        .frame(height: 200)
-                        .clipped()
-                        .cornerRadius(12)
-                    }
-                    
-            
-                    Text(meal.name)
-                        .font(.title)
-                        .fontWeight(.bold)
-                    
-                    Divider()
-                    
- 
-                    Text("Instructions")
-                        .font(.headline)
-                    
-               
-                    Text(
-                        meal.instructions
-                            .replacingOccurrences(of: "\r\n", with: "\n")
-                            .replacingOccurrences(of: "\n\n", with: "\n")
-                            .trimmingCharacters(in: .whitespacesAndNewlines)
-                    )
-                    .font(.body)
-                    .lineSpacing(6)
-                }
-                .padding()
+                .disabled(!buttonEnabled)
             }
+          
+            .sheet(item: $selectedMeal) { meal in
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 16) {
+                        
+                  
+                        if let url = URL(string: meal.thumbnail) {
+                            AsyncImage(url: url) { image in
+                                image
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                            } placeholder: {
+                                ProgressView()
+                            }
+                            .frame(height: 200)
+                            .clipped()
+                            .cornerRadius(12)
+                        }
+                        
+                
+                        Text(meal.name)
+                            .font(.title)
+                            .fontWeight(.bold)
+                        
+                        Divider()
+                        
+     
+                        Text("Instructions")
+                            .font(.headline)
+                        
+                   
+                        Text(
+                            meal.instructions
+                                .replacingOccurrences(of: "\r\n", with: "\n")
+                                .replacingOccurrences(of: "\n\n", with: "\n")
+                                .trimmingCharacters(in: .whitespacesAndNewlines)
+                        )
+                        .font(.body)
+                        .lineSpacing(6)
+                    }
+                    .padding()
+                }
+            }
+          
+           
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color(red: 166/255, green: 214/255, blue: 167/255))
+       
+       
     
     }
     
