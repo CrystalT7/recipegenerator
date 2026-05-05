@@ -18,7 +18,7 @@ struct ContentView: View {
     @State private var showSheet = false
     @State private var isScaled = false
     
-
+    @State private var animatingMeal: Meal?
     let imageSize: CGFloat = 100
 
     var body: some View {
@@ -39,7 +39,7 @@ struct ContentView: View {
                 }
             }
             
-            Button("Generate Random Meals") {
+            Button("Press For Meals!!") {
                 Task {
                     do {
                        
@@ -139,9 +139,21 @@ struct ContentView: View {
             .cornerRadius(10)
             .clipped()
             .onTapGesture {
-                selectedMeal = meal
-                showSheet = true
+                Task {
+                    animatingMeal = meal
+                    isScaled = true
+                    
+                    try? await Task.sleep(nanoseconds: 200_000_000) 
+                    
+                    isScaled = false
+                    
+                    try? await Task.sleep(nanoseconds: 200_000_000)
+                    
+                    selectedMeal = meal
+                }
             }
+            .scaleEffect(animatingMeal?.id == meal.id && isScaled ? 1.2 : 1.0)
+            .animation(.easeInOut(duration: 0.2), value: isScaled)
         } else {
        
             Rectangle()
