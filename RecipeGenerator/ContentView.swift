@@ -22,19 +22,15 @@ struct ContentView: View {
     let imageSize: CGFloat = 100
 
     var body: some View {
-        ZStack{
-            Image("FoodBackground4")
-                   .resizable()
-                   .scaledToFill()
-                   .ignoresSafeArea()
-                 //  .frame(width:1000)
+        
             VStack(spacing: 20) {
                 Text("The Recipe Generator")
-                    .font(.custom("Marseille Free", size: 40))
-                     .multilineTextAlignment(.center)
-                     .lineLimit(nil)
-                     .minimumScaleFactor(0.5)
-                     .padding(.horizontal)
+                    .font(.custom("Marseille Free", size: 60))
+                            .multilineTextAlignment(.center)
+                            .frame(maxWidth: .infinity)
+                            .lineLimit(nil)
+                            .minimumScaleFactor(0.5)
+                            .padding(.horizontal)
                 
                 VStack(spacing: 10) {
                     HStack(spacing: 10) {
@@ -130,9 +126,13 @@ struct ContentView: View {
                     .padding()
                 }
             }
-          
-           
-        }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background(
+                Image("WatercolorVeggie")
+                    .resizable()
+                    .scaledToFill()
+            )
+            .ignoresSafeArea()
        
        
     
@@ -175,6 +175,8 @@ struct ContentView: View {
                 .cornerRadius(10)
         }
     }
+      
+        
 }
 
 
