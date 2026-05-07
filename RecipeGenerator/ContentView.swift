@@ -25,12 +25,16 @@ struct ContentView: View {
         
             VStack(spacing: 20) {
                 Text("The Recipe Generator")
+                   
                     .font(.custom("Marseille Free", size: 60))
-                            .multilineTextAlignment(.center)
-                            .frame(maxWidth: .infinity)
-                            .lineLimit(nil)
-                            .minimumScaleFactor(0.5)
-                            .padding(.horizontal)
+                        .foregroundStyle(Color(red: 0.1, green: 0.3, blue: 0.1))
+                        .multilineTextAlignment(.center)
+                       // .frame(maxWidth: .infinity)
+                        .padding(.horizontal, 6)
+                          .padding(.vertical, 6)
+                        .background(.ultraThinMaterial)
+                        .cornerRadius(20)
+                      
                 
                 VStack(spacing: 10) {
                     HStack(spacing: 10) {
@@ -155,7 +159,7 @@ struct ContentView: View {
      
             .overlay(
                 RoundedRectangle(cornerRadius: 10)
-                    .stroke(Color.black, lineWidth: 3)
+                    .stroke(Color(red: 0.1, green: 0.3, blue: 0.1), lineWidth: 3)
             )
             .shadow(
                 color: .black.opacity(0.3),
