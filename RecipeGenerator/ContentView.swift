@@ -147,35 +147,48 @@ struct ContentView: View {
             } placeholder: {
                 ProgressView()
             }
-            .aspectRatio(contentMode: .fill) 
+            .aspectRatio(contentMode: .fill)
             .frame(width: imageSize, height: imageSize)
             .cornerRadius(10)
             .clipped()
+
+     
+            .overlay(
+                RoundedRectangle(cornerRadius: 10)
+                    .stroke(Color.black, lineWidth: 3)
+            )
+            .shadow(
+                color: .black.opacity(0.3),
+                radius: 6,
+                x: 0,
+                y: 4
+            )
+
             .onTapGesture {
                 Task {
                     animatingMeal = meal
                     isScaled = true
-                    
-                    try? await Task.sleep(nanoseconds: 200_000_000) 
-                    
-                    isScaled = false
-                    
+
                     try? await Task.sleep(nanoseconds: 200_000_000)
-                    
+
+                    isScaled = false
+
+                    try? await Task.sleep(nanoseconds: 200_000_000)
+
                     selectedMeal = meal
                 }
             }
             .scaleEffect(animatingMeal?.id == meal.id && isScaled ? 1.2 : 1.0)
             .animation(.easeInOut(duration: 0.2), value: isScaled)
+
         } else {
-       
+
             Rectangle()
                 .fill(Color.gray.opacity(0.3))
                 .frame(width: imageSize, height: imageSize)
                 .cornerRadius(10)
         }
     }
-      
         
 }
 
